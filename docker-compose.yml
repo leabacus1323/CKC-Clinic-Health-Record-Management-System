@@ -1,0 +1,58 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ckc-shrms
+    container_name: ckc-shrms
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - ckc-shrms
+
+  webserver:
+    image: nginx:alpine
+    container_name: ckc-shrms-webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www
+      - ./public:/var/www/html/public
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - ckc-shrms
+    security_opt:
+      - label=disable
+  db:
+    image: mariadb:11.5
+    container_name: ckc-shrms-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_DATABASE: ckc-shrms
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-CHANGE_ME_ROOT_PASSWORD}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-CHANGE_ME_DB_PASSWORD}
+      MARIADB_USER: ckc-shrms
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - ckc-shrms
+
+networks:
+  ckc-shrms:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local

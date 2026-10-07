@@ -1,0 +1,89 @@
+SYSTEMM LARAVEL ENHANCEMENT REPORT
+Generated: July 4, 2026 (Asia/Manila)
+
+IMPLEMENTED FEATURES
+
+1. Admin Health Analytics and Automated Reports
+- Added an administrator-only Health Analytics page.
+- Supports 30-day, 90-day, 180-day, and 365-day reporting periods.
+- Displays appointment volume, pending/confirmed/cancelled appointments, cancellation and pending rates, unique patients served, average daily clinic utilization, workload per clinician, and busiest weekday.
+- Summarizes health service activity from health records, physical examinations, dental examinations, prescriptions, and immunization records.
+- Shows de-identified trends for broad appointment-reason categories, monthly utilization, commonly prescribed medicines, medicine stock levels, and medicines nearing expiration.
+- Adds automated recommendations for staffing/workload, appointment backlogs, changing demand, cancellation patterns, clinical activity, low stock, and expiring supplies.
+- Suppresses small visit-reason categories to reduce re-identification risk.
+- Provides CSV export and saved report snapshots.
+
+2. Automated Report Generation
+- Added the Artisan command:
+  php artisan health:analytics-snapshot {period=30}
+- Scheduled a daily 30-day snapshot at 1:00 AM.
+- Scheduled a weekly 90-day snapshot every Monday at 1:15 AM.
+- Uses Asia/Manila as the application timezone.
+
+3. Responsive Navigation
+- Consolidated navigation into one responsive role-aware sidebar/drawer.
+- Added links appropriate to administrators, clinic staff, doctors, students, employees/faculty, and guardians.
+- Added the Health Analytics link for system administrators.
+- Improved mobile behavior so the drawer closes after a navigation link is selected.
+- Removed the duplicated/empty mobile navigation implementation.
+
+4. Unified Notification Bell
+- Added role-aware notification groups for appointments, requests, and announcements.
+- Students/employees receive upcoming appointment and certificate-request updates.
+- Doctors and clinic staff receive pending appointment, certificate, and immunization-review alerts.
+- Administrators receive aggregate workload alerts without exposing patient identities.
+- Guardians receive guardian-access verification updates.
+- Active announcements are shown to all authenticated users.
+- Notifications refresh automatically every 60 seconds and are returned with no-store cache headers.
+
+NEW ADMIN ROUTES
+- GET  /admin/analytics
+- POST /admin/analytics/generate
+- GET  /admin/analytics/export
+
+All analytics routes require authentication, accepted privacy terms, the system-administrator role, infrastructure auditing, and sensitive-response no-cache middleware.
+
+IMPORTANT DEPLOYMENT COMMANDS
+Run these commands from the project directory:
+
+1. Install/update PHP dependencies when needed:
+   composer install
+
+2. Apply the new analytics snapshot table:
+   php artisan migrate
+
+3. Clear generated Laravel caches:
+   php artisan optimize:clear
+
+4. Build frontend assets when modifying CSS or JavaScript:
+   npm ci
+   npm run build
+
+5. Run the scheduler during local testing:
+   php artisan schedule:work
+
+For production, configure the server cron entry:
+* * * * * cd /path/to/systemm && php artisan schedule:run >> /dev/null 2>&1
+
+ENVIRONMENT SETTINGS
+The following settings were added to .env and .env.example:
+APP_TIMEZONE=Asia/Manila
+CLINIC_LOW_STOCK_THRESHOLD=10
+
+SERVER REQUIREMENTS
+Make sure these PHP extensions are enabled:
+- mbstring
+- DOM/XML
+- PDO MySQL (or the PDO driver matching the configured database)
+
+VALIDATION COMPLETED
+- 220 PHP source/configuration files passed PHP syntax checks.
+- 246 Blade templates compiled and their generated PHP passed syntax checks.
+- Laravel registered 302 routes successfully.
+- All 3 admin analytics routes were confirmed with the intended security middleware.
+- The health:analytics-snapshot command was registered successfully.
+- The Vite production frontend build completed successfully.
+- The final ZIP archive was tested for archive integrity.
+
+TESTING LIMITATION
+Full database integration and PHPUnit execution could not be completed inside the editing sandbox because its PHP installation does not include PDO database, DOM/XML, and mbstring extensions. Code syntax, Blade compilation, route registration, command registration, middleware registration, and frontend production compilation were validated. Run migrations and application tests on the deployment machine after enabling the required PHP extensions.

@@ -1,0 +1,17 @@
+{
+    "name": "CKC Clinic Health Record Management System",
+    "short_name": "CKC Clinic HRMS",
+    "start_url": "/index.php",
+    "background_color": "#6777ef",
+    "description": "Clinic health record management system for Christ the King College",
+    "display": "fullscreen",
+    "theme_color": "#6777ef",
+    "icons": [
+        {
+            "src": "ckc.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

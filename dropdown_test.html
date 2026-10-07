@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dropdown Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom dropdown styling for better visibility */
+        select option {
+            color: #000000 !important;
+            background-color: #ffffff !important;
+            padding: 8px;
+        }
+
+        select option:hover {
+            background-color: #f3f4f6 !important;
+            color: #000000 !important;
+        }
+
+        select option:checked {
+            background-color: #3b82f6 !important;
+            color: #ffffff !important;
+        }
+
+        /* Ensure dropdown is visible in both light and dark modes */
+        select {
+            color: #000000 !important;
+            background-color: #ffffff !important;
+        }
+
+        select:focus {
+            color: #000000 !important;
+            background-color: #ffffff !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <h1 class="text-2xl font-bold mb-4">Dropdown Visibility Test</h1>
+    
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h2 class="text-lg font-semibold mb-4">Patient Dropdown Test</h2>
+        
+        <div class="relative z-0 w-full mb-5 group">
+            <select name="patient_id" id="patient"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-white border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:bg-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer cursor-pointer"
+                style="color: black; background-color: white;">
+                <option value="" disabled selected style="color: black; background-color: white;">Select a patient...</option>
+                <option value="1" style="color: black; background-color: white;">Jane Staff (2)</option>
+                <option value="2" style="color: black; background-color: white;">John Student (1)</option>
+                <option value="3" style="color: black; background-color: white;">Nathaniel Ramona Dibbert (2)</option>
+            </select>
+            <label for="patient" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Patient</label>
+        </div>
+
+        <div class="relative z-0 w-full mb-5 group">
+            <select name="doc_id" id="doctor"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-white border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:bg-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer cursor-pointer"
+                style="color: black; background-color: white;">
+                <option value="" disabled selected style="color: black; background-color: white;">Select a doctor...</option>
+                <option value="1" style="color: black; background-color: white;">Dr. John Smith (General Medicine)</option>
+                <option value="2" style="color: black; background-color: white;">Gunnar Lawrence Harber (General Medicine)</option>
+                <option value="3" style="color: black; background-color: white;">Ubaldo Robyn Mann (General Medicine)</option>
+            </select>
+            <label for="doctor" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Doctor</label>
+        </div>
+    </div>
+    
+    <div class="bg-gray-800 p-6 rounded-lg shadow mt-6 text-white">
+        <h2 class="text-lg font-semibold mb-4">Dark Theme Test</h2>
+        <p>Both dropdowns should have black text on white background, even in dark containers.</p>
+    </div>
+</body>
+</html>

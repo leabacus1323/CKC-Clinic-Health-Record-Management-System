@@ -1,0 +1,277 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --clinic-teal-50: #effcf9;
+        --clinic-teal-100: #d7f5ef;
+        --clinic-teal-200: #afe9df;
+        --clinic-teal-500: #15949b;
+        --clinic-teal-600: #0f7f86;
+        --clinic-teal-700: #0d686e;
+        --clinic-teal-800: #11565b;
+        --clinic-navy: #1f3341;
+        --clinic-canvas: #f4f7f8;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        background: var(--clinic-canvas);
+        color: #263746;
+    }
+
+    ::selection {
+        background: var(--clinic-teal-200);
+        color: var(--clinic-teal-800);
+    }
+}
+
+@layer components {
+    .clinic-body {
+        @apply min-h-screen bg-slate-100 font-sans text-slate-700 antialiased;
+    }
+
+    .clinic-shell {
+        @apply min-h-screen;
+    }
+
+    .clinic-topbar {
+        @apply fixed inset-x-0 top-0 z-40 flex h-16 items-center border-b border-white/10 px-4 text-white shadow-lg md:left-64 md:px-6;
+        background: linear-gradient(105deg, var(--clinic-teal-700), var(--clinic-teal-500));
+    }
+
+    .clinic-sidebar {
+        @apply fixed inset-y-0 left-0 z-50 flex w-64 -translate-x-full flex-col overflow-y-auto border-r border-slate-200 bg-white shadow-xl transition-transform duration-200 md:translate-x-0;
+    }
+
+    .clinic-brand {
+        @apply flex h-16 items-center gap-3 border-b border-slate-200 px-5;
+    }
+
+    .clinic-brand-mark {
+        @apply flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-teal-100;
+    }
+
+    .clinic-nav-section {
+        @apply px-3 py-4;
+    }
+
+    .clinic-nav-label {
+        @apply mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400;
+    }
+
+    .clinic-nav-link {
+        @apply mb-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-600 transition duration-150 hover:bg-teal-50 hover:text-teal-800;
+    }
+
+    .clinic-nav-link-active {
+        @apply bg-teal-600 text-white shadow-md shadow-teal-900/10 hover:bg-teal-700 hover:text-white;
+    }
+
+    .clinic-nav-link-danger {
+        @apply text-rose-700 hover:bg-rose-50 hover:text-rose-800;
+    }
+
+    .clinic-page {
+        @apply min-h-screen pt-16 md:ml-64;
+    }
+
+    .clinic-main {
+        @apply min-h-[calc(100vh-4rem)] px-4 py-5 sm:px-6 lg:px-8;
+    }
+
+    .clinic-content {
+        @apply mx-auto w-full max-w-[1600px];
+    }
+
+    .clinic-page-heading {
+        @apply mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+    }
+
+    .clinic-page-title {
+        @apply text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl;
+    }
+
+    .clinic-page-subtitle {
+        @apply mt-1 text-sm text-slate-500;
+    }
+
+    .clinic-card {
+        @apply rounded-2xl border border-slate-200 bg-white shadow-sm;
+    }
+
+    .clinic-card-header {
+        @apply flex flex-col gap-2 border-b border-slate-100 px-5 py-4 sm:flex-row sm:items-center sm:justify-between;
+    }
+
+    .clinic-card-body {
+        @apply p-5;
+    }
+
+    .clinic-stat-card {
+        @apply relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md;
+    }
+
+    .clinic-stat-icon {
+        @apply flex h-11 w-11 items-center justify-center rounded-xl bg-teal-50 text-teal-700;
+    }
+
+    .clinic-button-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-200 disabled:cursor-not-allowed disabled:opacity-60;
+    }
+
+    .clinic-button-secondary {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200;
+    }
+
+    .clinic-button-danger {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-700 focus:outline-none focus:ring-4 focus:ring-rose-200;
+    }
+
+    .clinic-input {
+        @apply block w-full rounded-xl border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 shadow-sm placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500;
+    }
+
+    .clinic-badge {
+        @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold;
+    }
+
+    .clinic-table-wrap {
+        @apply overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm;
+    }
+
+    .clinic-table {
+        @apply min-w-full divide-y divide-slate-200 text-sm;
+    }
+
+    .clinic-table thead {
+        @apply bg-slate-50;
+    }
+
+    .clinic-table th {
+        @apply px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-500;
+    }
+
+    .clinic-table td {
+        @apply px-4 py-3 text-slate-700;
+    }
+
+    .clinic-table tbody {
+        @apply divide-y divide-slate-100 bg-white;
+    }
+
+    .clinic-table tbody tr {
+        @apply transition hover:bg-teal-50/50;
+    }
+
+    .clinic-overlay {
+        @apply fixed inset-0 z-40 bg-slate-950/50 backdrop-blur-sm md:hidden;
+    }
+
+    .clinic-login-shell {
+        @apply relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-100 px-4 py-8 sm:px-6;
+    }
+
+    .clinic-login-shell::before,
+    .clinic-login-shell::after {
+        content: '';
+        position: absolute;
+        border-radius: 9999px;
+        filter: blur(1px);
+        pointer-events: none;
+    }
+
+    .clinic-login-shell::before {
+        width: 30rem;
+        height: 30rem;
+        left: -12rem;
+        top: -12rem;
+        background: rgba(15, 127, 134, 0.16);
+    }
+
+    .clinic-login-shell::after {
+        width: 24rem;
+        height: 24rem;
+        right: -8rem;
+        bottom: -10rem;
+        background: rgba(21, 148, 155, 0.12);
+    }
+
+    .clinic-login-card {
+        @apply relative z-10 grid w-full overflow-hidden rounded-3xl border border-white/70 bg-white shadow-2xl shadow-slate-900/10 lg:grid-cols-[0.95fr_1.05fr];
+    }
+
+    .clinic-login-brand-panel {
+        @apply relative hidden min-h-[610px] overflow-hidden p-10 text-white lg:flex lg:flex-col lg:justify-between;
+        background: linear-gradient(145deg, var(--clinic-teal-800), var(--clinic-teal-500));
+    }
+
+    .clinic-login-form-panel {
+        @apply flex min-h-[560px] items-center p-6 sm:p-10 lg:p-14;
+    }
+
+    .clinic-mobile-brand {
+        @apply mb-8 flex items-center gap-3 lg:hidden;
+    }
+
+    .clinic-security-note {
+        @apply rounded-2xl border border-teal-100 bg-teal-50 p-4 text-sm leading-6 text-teal-900;
+    }
+
+    /* Harmonize legacy modules without rewriting every page. */
+    .clinic-main table:not(.unstyled-table) {
+        @apply w-full text-sm;
+    }
+
+    .clinic-main table:not(.unstyled-table) thead {
+        @apply bg-slate-50 text-slate-600;
+    }
+
+    .clinic-main table:not(.unstyled-table) th {
+        @apply border-b border-slate-200 px-4 py-3 text-left text-xs font-bold uppercase tracking-wider;
+    }
+
+    .clinic-main table:not(.unstyled-table) td {
+        @apply border-b border-slate-100 px-4 py-3 align-middle;
+    }
+
+    .clinic-main table:not(.unstyled-table) tbody tr {
+        @apply transition hover:bg-teal-50/50;
+    }
+
+    .clinic-main input:not([type='checkbox']):not([type='radio']):not([type='hidden']),
+    .clinic-main select,
+    .clinic-main textarea {
+        @apply rounded-xl border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500;
+    }
+
+    .clinic-main [class~="shadow"],
+    .clinic-main [class~="shadow-sm"] {
+        border-color: rgb(226 232 240);
+        box-shadow: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+    }
+}
+
+/* Desktop navigation must never depend on Alpine state or delayed JavaScript. */
+@media (min-width: 768px) {
+    .clinic-sidebar {
+        transform: translateX(0) !important;
+        visibility: visible !important;
+    }
+
+    .clinic-page {
+        margin-left: 16rem !important;
+    }
+
+    .clinic-topbar {
+        left: 16rem !important;
+    }
+}
