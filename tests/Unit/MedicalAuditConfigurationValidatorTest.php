@@ -8,6 +8,11 @@ use Tests\TestCase;
 
 class MedicalAuditConfigurationValidatorTest extends TestCase
 {
+    public function test_local_environment_does_not_require_external_boundary_by_default(): void
+    {
+        $this->assertFalse(config('medical_security.audit.require_external_boundary'));
+    }
+
     public function test_safe_https_collector_configuration_passes(): void
     {
         config()->set('medical_security.audit', [

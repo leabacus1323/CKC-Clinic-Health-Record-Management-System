@@ -2,6 +2,10 @@
 
 The authoritative medical audit must be outside the Laravel administrator's control boundary. The application has no update, delete, truncate, or clear operation for this store.
 
+## Local development
+
+For `local`, `testing`, and `development`, the default audit connection is the application's database and the external-boundary check is disabled. Run migrations to create `medical_access_events`. This local configuration is not suitable for production: production and staging must use the separate audit connection or external collector below, and access remains fail-closed if that sink is unavailable.
+
 ## Preferred: external HTTPS collector
 
 ```env

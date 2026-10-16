@@ -63,9 +63,37 @@ SESSION_DRIVER=file
 CACHE_STORE=file
 QUEUE_CONNECTION=sync
 
-# Mail (configure if needed)
-MAIL_MAILER=log
+# Gmail SMTP (use a Google App Password, not your account password)
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your-gmail-address@gmail.com
+MAIL_PASSWORD=your-google-app-password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="${MAIL_USERNAME}"
+MAIL_FROM_NAME="${APP_NAME}"
 ```
+
+Use the same mail settings in two separate files:
+
+1. **Local XAMPP:** set them in the project-root `.env` on your computer.
+2. **Production:** set them in the production server's `.env` through its
+   private control panel or SSH. Do not upload your local `.env`; configure
+   production values separately.
+
+For both environments, enable 2-Step Verification on the Google account and
+create an App Password in that account's security settings. Put the App
+Password in `MAIL_PASSWORD`; do not use your regular Google password.
+`MAIL_FROM_ADDRESS` must be the same Gmail address as `MAIL_USERNAME`.
+Production hosting must allow outbound SMTP connections to `smtp.gmail.com` on
+port `587`; if it blocks SMTP, use an email provider or relay supported by that
+host instead.
+
+After changing settings, clear Laravel's cached configuration in that
+environment with `php artisan config:clear` (and `php artisan config:cache` if
+production normally uses cached configuration), then submit the forgot-password
+form and confirm the message arrives. Never commit `.env` files or share mail
+passwords in chat.
 
 ---
 

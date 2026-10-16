@@ -5,7 +5,10 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Password;
+use Symfony\Component\Mailer\Exception\TransportException;
 use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
@@ -28,6 +31,23 @@ class PasswordResetTest extends TestCase
         $this->post('/forgot-password', ['email' => $user->email]);
 
         Notification::assertSentTo($user, ResetPassword::class);
+    }
+
+    public function test_mail_delivery_failure_returns_a_user_facing_error_instead_of_a_server_error(): void
+    {
+        Password::shouldReceive('sendResetLink')
+            ->once()
+            ->andThrow(new TransportException('SMTP authentication failed'));
+
+        Log::shouldReceive('error')
+            ->once()
+            ->with('Password reset email delivery failed.', [
+                'exception' => TransportException::class,
+            ]);
+
+        $this->post('/forgot-password', ['email' => 'user@example.com'])
+            ->assertRedirect()
+            ->assertSessionHasErrors('email');
     }
 
     public function test_reset_password_screen_can_be_rendered(): void

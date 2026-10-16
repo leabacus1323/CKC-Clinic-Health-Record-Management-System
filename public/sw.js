@@ -1,64 +1,61 @@
-const CACHE_NAME = 'ctc-clinic-static-v4';
-const OFFLINE_URL = '/offline.html';
-const PRECACHE_URLS = [OFFLINE_URL, '/manifest.json', '/ckc.png'];
+const preLoad = function () {
+    return caches.open("offline").then(function (cache) {
+        // caching index and important routes
+        return cache.addAll(filesToCache);
+    });
+};
 
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => cache.addAll(PRECACHE_URLS))
-            .then(() => self.skipWaiting())
-    );
+self.addEventListener("install", function (event) {
+    event.waitUntil(preLoad());
 });
 
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys()
-            .then((keys) => Promise.all(
-                keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
-            ))
-            .then(() => self.clients.claim())
-    );
-});
+const filesToCache = [
+    '/',
+    '/offline.html'
+];
 
-self.addEventListener('fetch', (event) => {
-    const request = event.request;
-
-    if (request.method !== 'GET') {
-        return;
-    }
-
-    const url = new URL(request.url);
-
-    // Never cache authenticated HTML or application data. Navigation remains network-first
-    // and uses only the generic offline page when the network is unavailable.
-    if (request.mode === 'navigate') {
-        event.respondWith(fetch(request).catch(() => caches.match(OFFLINE_URL)));
-        return;
-    }
-
-    const isStaticAsset = url.origin === self.location.origin && (
-        url.pathname.startsWith('/build/assets/') ||
-        /\.(?:css|js|png|jpe?g|webp|svg|gif|ico|woff2?)$/i.test(url.pathname)
-    );
-
-    if (!isStaticAsset) {
-        return;
-    }
-
-    event.respondWith(
-        caches.match(request).then((cached) => {
-            if (cached) {
-                return cached;
+const checkResponse = function (request) {
+    return new Promise(function (fulfill, reject) {
+        fetch(request).then(function (response) {
+            if (response.status !== 404) {
+                fulfill(response);
+            } else {
+                reject();
             }
+        }, reject);
+    });
+};
 
-            return fetch(request).then((response) => {
-                if (response.ok) {
-                    const copy = response.clone();
-                    caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-                }
+const addToCache = function (request) {
+    // Only cache http(s) requests
+    if (!request.url.startsWith('http')) {
+        return Promise.resolve();
+    }
+    return caches.open("offline").then(function (cache) {
+        return fetch(request).then(function (response) {
+            return cache.put(request, response);
+        });
+    });
+};
 
-                return response;
-            });
-        })
-    );
+
+const returnFromCache = function (request) {
+    return caches.open("offline").then(function (cache) {
+        return cache.match(request).then(function (matching) {
+            if (!matching || matching.status === 404) {
+                return cache.match("offline.html");
+            } else {
+                return matching;
+            }
+        });
+    });
+};
+
+self.addEventListener("fetch", function (event) {
+    event.respondWith(checkResponse(event.request).catch(function () {
+        return returnFromCache(event.request);
+    }));
+    if(!event.request.url.startsWith('http')){
+        event.waitUntil(addToCache(event.request));
+    }
 });

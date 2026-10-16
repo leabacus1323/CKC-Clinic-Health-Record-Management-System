@@ -35,15 +35,30 @@ QUEUE_CONNECTION=sync
 BROADCAST_CONNECTION=log
 FILESYSTEM_DISK=local
 
-# Mail
-MAIL_MAILER=log
+# Mail: use a real SMTP provider; "log" does not deliver email
+MAIL_MAILER=smtp
+MAIL_HOST=your-smtp-host
+MAIL_PORT=587
+MAIL_USERNAME=your-smtp-username
+MAIL_PASSWORD=your-smtp-password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=your-verified-sender-address
+MAIL_FROM_NAME="${APP_NAME}"
 ```
 
 **IMPORTANT Changes:**
 - `APP_ENV=production` (not local)
 - `APP_DEBUG=false` (NEVER true in production!)
-- `APP_URL=` your actual domain
+- `APP_URL=` your actual HTTPS domain (not localhost)
 - `DB_CONNECTION=mysql` (not sqlite)
+- `MAIL_MAILER=smtp` with credentials from a real email provider. `MAIL_MAILER=log`
+  only writes messages to the server log; it never sends them to the user's inbox.
+
+Use a provider and SMTP settings supported by your hosting plan. InfinityFree may
+restrict outbound SMTP connections, so confirm the host and port are reachable
+from the account before relying on them. For Gmail, use a Google App Password,
+not the account password. Keep production credentials only in the server's
+private `.env`; do not upload your local `.env`.
 
 ---
 
@@ -165,6 +180,11 @@ RedirectMatch 403 ^/bootstrap/cache/
 ---
 
 ### Step 7: Clear Caches (Important!)
+
+After changing `.env`, remove `bootstrap/cache/config.php` in File Manager if it
+exists so Laravel reloads the production settings. Do not remove other files
+from `bootstrap/cache/`. If you use the cache-clearing script below, delete that
+script from the public site as soon as it finishes.
 
 Create a file: `htdocs/clear_cache.php`
 
